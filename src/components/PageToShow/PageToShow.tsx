@@ -18,7 +18,6 @@ const PageToShow = () => {
                 const response = await axiosApi.get(`/pages/${pageName}.json`);
                 const responseData = await response.data;
                 setPage(responseData);
-                console.log(responseData)
             } catch (e) {
                 console.log(e)
             } finally {
@@ -38,6 +37,14 @@ const PageToShow = () => {
                     </div>
                 </div>
             )}
+
+            {page !== null ?
+                <div className='container mt-2'>
+                    <h1 className='card-title'>{page.title}</h1>
+                    <p className='card-text'>{page.content}</p>
+                </div> : <div>No information</div>
+            }
+
         </div>
     );
 };
