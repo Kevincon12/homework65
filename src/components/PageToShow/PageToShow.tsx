@@ -41,7 +41,7 @@ const PageToShow = () => {
             {page !== null ?
                 <div className='container mt-2'>
                     <h1 className='card-title'>{page.title}</h1>
-                    <p className='card-text'>{page.content}</p>
+                    <p className='card-text mt-2'>{page.content}</p>
                 </div> : <div>No information</div>
             }
 
