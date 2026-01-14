@@ -1,12 +1,15 @@
 import {useState} from 'react';
 import axiosApi from "../../axiosApi.ts";
 import type {Page} from "../../types";
+import {useNavigate} from "react-router-dom";
+
 
 const AdminPageEdit = () => {
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState<string>('');
     const [content, setContent] = useState<string>('');
     const [currentPage, setCurrentPage] = useState<string>('about');
+    const navigate = useNavigate();
 
 
     const selectChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -28,9 +31,24 @@ const AdminPageEdit = () => {
         }
     }
 
+    const makeChangesForm = async (e: React.ChangeEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        try {
+            setLoading(true);
+
+            await axiosApi.put(`/pages/${currentPage}.json`, {title: title, content: content,});
+            navigate(`/pages/${currentPage}`);
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return (
         <div className='container mt-2'>
-            <h1 className='card-title'>Admin page</h1>
+            <h1 className='card-title mb-2'>Admin page</h1>
 
             <select value={currentPage} onChange={selectChange}>
                 <option value="about">About</option>
@@ -48,7 +66,7 @@ const AdminPageEdit = () => {
                 </div>
             )}
 
-            <form className='mt-2'>
+            <form className='mt-2' onSubmit={makeChangesForm}>
                 <input
                     type="text"
                     value={title}
